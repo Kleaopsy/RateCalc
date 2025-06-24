@@ -20,6 +20,11 @@
     <System:String x:Key="BillingInterestCalcBtn1">Calcular</System:String>
     <System:String x:Key="BillingInterestCalcLabel1">Los meses deben ingresarse en orden ascendente. Ejemplo: 1=&gt;..., 2=&gt;..., 3=&gt;...</System:String>
     <System:String x:Key="BillingInterestCalcLabel2">Los números de mes deben comenzar en 1 y no pueden contener 0.</System:String>
+    <System:String x:Key="CalcDataGrid1Col1">Mes</System:String>
+    <System:String x:Key="CalcDataGrid1Col2">Depositado</System:String>
+    <System:String x:Key="CalcDataGrid1Col3">Interés Mensual</System:String>
+    <System:String x:Key="CalcDataGrid1Col4">Interés Total</System:String>
+    <System:String x:Key="CalcDataGrid1Col5">Total Acumulado</System:String>
     <!-- Settings Layout -->
     <System:String x:Key="SettingLayoutLabel1">Configuraciones</System:String>
     <System:String x:Key="SettingLayoutLanguagesLabel1">Idiomas:</System:String>

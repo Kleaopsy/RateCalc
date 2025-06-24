@@ -20,6 +20,11 @@
     <System:String x:Key="BillingInterestCalcBtn1">Hesapla</System:String>
     <System:String x:Key="BillingInterestCalcLabel1">Aylar artan sırada girilmelidir. Örnek: 1=&gt;..., 2=&gt;..., 3=&gt;...</System:String>
     <System:String x:Key="BillingInterestCalcLabel2">Ay numaraları 1 ile başlamalı ve 0 içeremez.</System:String>
+    <System:String x:Key="CalcDataGrid1Col1">Ay</System:String>
+    <System:String x:Key="CalcDataGrid1Col2">Yatırılan</System:String>
+    <System:String x:Key="CalcDataGrid1Col3">Aylık Faiz</System:String>
+    <System:String x:Key="CalcDataGrid1Col4">Toplam Faiz</System:String>
+    <System:String x:Key="CalcDataGrid1Col5">Birikmiş Toplam</System:String>
     <!-- Settings Layout -->
     <System:String x:Key="SettingLayoutLabel1">Ayarlar</System:String>
     <System:String x:Key="SettingLayoutLanguagesLabel1">Diller:</System:String>

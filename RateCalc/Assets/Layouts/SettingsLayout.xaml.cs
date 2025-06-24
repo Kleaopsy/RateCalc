@@ -133,6 +133,5 @@ namespace RateCalc.Assets.Layouts
             };
             transform?.BeginAnimation(TranslateTransform.XProperty, anim);
         }
-
     }
 }

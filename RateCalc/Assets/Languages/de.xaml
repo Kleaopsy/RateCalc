@@ -20,8 +20,11 @@
     <System:String x:Key="BillingInterestCalcBtn1">Berechnen</System:String>
     <System:String x:Key="BillingInterestCalcLabel1">Die Monate müssen in aufsteigender Reihenfolge eingegeben werden. Beispiel: 1=&gt;..., 2=&gt;..., 3=&gt;...</System:String>
     <System:String x:Key="BillingInterestCalcLabel2">Monatsnummern müssen bei 1 beginnen und dürfen keine 0 enthalten.</System:String>
-
-
+    <System:String x:Key="CalcDataGrid1Col1">Monat</System:String>
+    <System:String x:Key="CalcDataGrid1Col2">Eingezahlt</System:String>
+    <System:String x:Key="CalcDataGrid1Col3">Monatliche Zinsen</System:String>
+    <System:String x:Key="CalcDataGrid1Col4">Gesamtzinsen</System:String>
+    <System:String x:Key="CalcDataGrid1Col5">Gesamtsumme</System:String>
     <!-- Settings Layout -->
     <System:String x:Key="SettingLayoutLabel1">Einstellungen</System:String>
     <System:String x:Key="SettingLayoutLanguagesLabel1">Sprachen:</System:String>

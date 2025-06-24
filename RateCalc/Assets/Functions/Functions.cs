@@ -1,4 +1,5 @@
 ﻿using RateCalc;
+using RateCalc.Assets.Layouts;
 using System.Configuration;
 using System.Globalization;
 using System.Runtime;

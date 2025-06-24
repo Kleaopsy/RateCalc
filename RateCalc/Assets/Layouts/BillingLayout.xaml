@@ -3,10 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:oxy="http://oxyplot.org/wpf"
-             xmlns:local="clr-namespace:RateCalc.Assets.Layouts"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="570" d:DesignWidth="1020"
+             d:DesignHeight="770" d:DesignWidth="1020"
     xmlns:System="clr-namespace:System;assembly=System.Runtime">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -71,8 +70,9 @@
                          Tag="{DynamicResource BillingMonthlyInTextBox1}" Text="{DynamicResource BillingMonthlyInTextBox1}"  
                          GotFocus="textBox_Focused" LostFocus="textBox_LostFocus"
                          AcceptsReturn="True" TextWrapping="WrapWithOverflow"/>
+                <Label Margin="10,10,0,0" FontFamily="Calibri" FontSize="22" FontWeight="Medium" Content="{DynamicResource BillingInterestOutLabel1}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
                 <StackPanel Height="50" VerticalAlignment="Top" Orientation="Horizontal" Margin="10,0,0,0">
-                    <Label FontFamily="Calibri" FontSize="22" FontWeight="Medium" Content="{DynamicResource BillingInterestOutLabel1}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     <RadioButton x:Name="interestIn" IsChecked="True" Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingInterestOutRBox1}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestOut" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                     <RadioButton Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingInterestOutRBox2}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestOut" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 </StackPanel>
@@ -123,18 +123,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <oxy:PlotView Grid.Row="0"
-              VerticalAlignment="Stretch" 
-              Background="{StaticResource SemiDarkBackground}"
-              FontFamily="Segoe UI"
-              Model="{Binding MyModel}">
-                <oxy:PlotView.Resources>
-                    <Style TargetType="oxy:PlotView">
-                        <Setter Property="Foreground" Value="White" />
-                    </Style>
-                </oxy:PlotView.Resources>
-            </oxy:PlotView>
-            <DataGrid x:Name="calcResultGrid"
+            <lvc:CartesianChart
+                x:Name="graphics1" Visibility="Hidden"
+                Background="{StaticResource SemiDarkBackground}"
+                Series="{Binding Series}"
+                XAxes="{Binding XAxes}" YAxes="{Binding YAxes}"
+                LegendPosition="Bottom"/>
+            <DataGrid x:Name="calcResultGrid" Visibility="Hidden"
                   Grid.Row="2"
                   CanUserReorderColumns="False"
                   FontFamily="Calibri"
@@ -158,11 +153,11 @@
                   ColumnHeaderStyle="{StaticResource DarkDataGridHeaderStyle}"
                   CellStyle="{StaticResource DarkDataGridCellStyle}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Ay" Binding="{Binding Month}" Width="0.1*" ElementStyle="{StaticResource DarkTextColumnStyle}"/>
-                    <DataGridTextColumn Header="Yatırılan" Binding="{Binding M}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
-                    <DataGridTextColumn Header="Bu Ay Faizi" Binding="{Binding MI}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
-                    <DataGridTextColumn Header="Toplam Faiz" Binding="{Binding InterestSum}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
-                    <DataGridTextColumn Header="Birikmiş Toplam" Binding="{Binding NMI}" Width="0.29*" HeaderStyle="{StaticResource LastColumnHeaderStyle}" ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col1}" Binding="{Binding Month}" Width="0.1*" ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col2}" Binding="{Binding M}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col3}" Binding="{Binding MI}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col4}" Binding="{Binding InterestSum}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col5}" Binding="{Binding NMI}" Width="0.29*" HeaderStyle="{StaticResource LastColumnHeaderStyle}" ElementStyle="{StaticResource DarkTextColumnStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

@@ -1,46 +1,35 @@
-﻿using ControlzEx.Standard;
-using Functions;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
+﻿using Functions;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
-using System.Collections.ObjectModel;
-using RateCalc.Assets.ViewModels;
 
 namespace RateCalc.Assets.Layouts
 {
     /// <summary>
     /// Interaction logic for BillingLayout.xaml
     /// </summary>
+    /// 
+
     public partial class BillingLayout : UserControl
     {
         char decimalSep = '.', thousandSep = ',';
-        private ChartViewModel chartViewModel;
+        private ChartViewModel chartViewModel = new ChartViewModel();
         public BillingLayout()
         {
             InitializeComponent();
             calcResultGrid.Loaded += (s, e) => RemoveRightBorderOfLastColumnHeader(calcResultGrid);
-            chartViewModel = new ChartViewModel();
-            DataContext = chartViewModel;
             Loaded += BillingLayout_Loaded;
+            DataContext = chartViewModel;
+            graphics1.LegendTextPaint = new SolidColorPaint(SKColors.White);
         }
 
         bool interestPercentTBoxBool = false, interestCalcTBoxBool = false;
@@ -255,6 +244,7 @@ namespace RateCalc.Assets.Layouts
 
             ControlCalcButton();
         }
+
         private void interestPercentText_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             char inputChar = e.Text[0];
@@ -351,7 +341,8 @@ namespace RateCalc.Assets.Layouts
             };
             transform?.BeginAnimation(TranslateTransform.XProperty, anim);
         }
-        private void AnimateLabelIn(Label label)
+
+        private void AnimateLabelIn(System.Windows.Controls.Label label)
         {
             label.Visibility = Visibility.Visible;
 
@@ -371,7 +362,7 @@ namespace RateCalc.Assets.Layouts
                 translate.BeginAnimation(TranslateTransform.XProperty, animation);
             }
         }
-        private void AnimateLabelOut(Label label)
+        private void AnimateLabelOut(System.Windows.Controls.Label label)
         {
             var translate = label.RenderTransform as TranslateTransform;
             if (translate != null)
@@ -436,7 +427,6 @@ namespace RateCalc.Assets.Layouts
                     yield return childOfChild;
             }
         }
-
         public void CalcGrid()
         {
             List<MonthlyResult> results = new List<MonthlyResult>();
@@ -453,17 +443,22 @@ namespace RateCalc.Assets.Layouts
                 {
                     Month = month,
                     NMI = TaskFunctions.FormatDecimalWithCustomSeparators(newMonthlyIncome[month], 2, decSep, thoSep),
-                    _NMI = newMonthlyIncome[month],
+                    _NMI = Math.Round(newMonthlyIncome[month], 2),
                     M = TaskFunctions.FormatDecimalWithCustomSeparators(monthlyIncome[month], 2, decSep, thoSep),
-                    _M = monthlyIncome[month],
+                    _M = Math.Round(monthlyIncome[month], 2),
                     InterestSum = TaskFunctions.FormatDecimalWithCustomSeparators((interestSum + monthlyInterest[month]), 2, decSep, thoSep),
-                    _InterestSum = (interestSum + monthlyInterest[month]),
+                    _InterestSum = Math.Round((interestSum + monthlyInterest[month]), 2),
                     MI = TaskFunctions.FormatDecimalWithCustomSeparators(monthlyInterest[month], 2, decSep, thoSep),
-                    _MI = monthlyInterest[month]
+                    _MI = Math.Round(monthlyInterest[month], 2)
                 });
             }
             calcResultGrid.ItemsSource = results;
             chartViewModel.UpdateChart(results);
+
+            if(graphics1.Visibility == Visibility.Hidden)
+                graphics1.Visibility = Visibility.Visible;
+            if(calcResultGrid.Visibility == Visibility.Hidden)
+                calcResultGrid.Visibility = Visibility.Visible;
         }
     }
     public class MonthlyResult
@@ -477,5 +472,136 @@ namespace RateCalc.Assets.Layouts
         public required decimal _InterestSum { get; set; }
         public required string NMI { get; set; }
         public required decimal _NMI { get; set; }
+    }
+    public class ChartViewModel : INotifyPropertyChanged
+    {
+        private ISeries[] _series = [];
+        public ISeries[] Series
+        {
+            get => _series;
+            set
+            {
+                _series = value;
+                OnPropertyChanged(nameof(Series));
+            }
+        }
+
+        private Axis[] _xAxes = [];
+
+        public Axis[] XAxes
+        {
+            get => _xAxes;
+            set
+            {
+                _xAxes = value;
+                OnPropertyChanged(nameof(XAxes));
+            }
+        }
+
+        private Axis[] _yAxes = [];
+        public Axis[] YAxes
+        {
+            get => _yAxes;
+            set
+            {
+                _yAxes = value;
+                OnPropertyChanged(nameof(YAxes));
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void UpdateChart(List<MonthlyResult> results)
+        {
+            var labels = results.Select(r => r.Month.ToString()).ToArray();
+            string _lang = SettingsFunctions.ControlLang();
+            string col_1 = "", col_2 = "", col_3 = "", col_4 = "";
+
+            switch (_lang)
+            {
+                case "en":
+                    col_1 = "Deposited";
+                    col_2 = "Monthly Interest";
+                    col_3 = "Total Interest";
+                    col_4 = "Total Accumulated";
+                    break;
+                case "tr":
+                    col_1 = "Yatırılan";
+                    col_2 = "Aylık Faiz";
+                    col_3 = "Toplam Faiz";
+                    col_4 = "Birikmiş Toplam";
+                    break;
+                case "fr":
+                    col_1 = "Déposé";
+                    col_2 = "Intérêt Mensuel";
+                    col_3 = "Intérêt Total";
+                    col_4 = "Total Accumulé";
+                    break;
+                case "de":
+                    col_1 = "Eingezahlt";
+                    col_2 = "Monatliche Zinsen";
+                    col_3 = "Gesamtzinsen";
+                    col_4 = "Gesamtsumme";
+                    break;
+                case "es":
+                    col_1 = "Depositado";
+                    col_2 = "Interés Mensual";
+                    col_3 = "Interés Total";
+                    col_4 = "Total Acumulado";
+                    break;
+                default:
+                    col_1 = "Deposited";
+                    col_2 = "Monthly Interest";
+                    col_3 = "Total Interest";
+                    col_4 = "Total Accumulated";
+                    break;
+            }
+            Series = new ISeries[]
+            {
+                new ColumnSeries<decimal>
+                {
+                    Name = col_1,
+                    Values = results.Select(r => r._M).ToArray()
+                },
+                new ColumnSeries<decimal>
+                {
+                    Name = col_2,
+                    Values = results.Select(r => r._MI).ToArray()
+                },
+                new ColumnSeries<decimal>
+                {
+                    Name = col_3,
+                    Values = results.Select(r => r._InterestSum).ToArray()
+                },
+                new ColumnSeries<decimal>
+                {
+                    Name = col_4,
+                    Values = results.Select(r => r._NMI).ToArray()
+                }
+            };
+
+            XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Labels = labels,
+                    LabelsRotation = 15,
+                    Name = "",
+                    LabelsPaint = new SolidColorPaint(SKColors.White),
+                    NamePaint = new SolidColorPaint(SKColors.White)
+                }
+            }; 
+            YAxes = new Axis[]{
+                new Axis
+                {
+                    Name = "",
+                    LabelsPaint = new SolidColorPaint(SKColors.White),
+                    NamePaint = new SolidColorPaint(SKColors.White)
+                }
+            };
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
