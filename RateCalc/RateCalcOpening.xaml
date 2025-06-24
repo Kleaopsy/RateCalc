@@ -1,0 +1,592 @@
+﻿<mah:MetroWindow x:Class="RateCalc.RateCalcOpening"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+     xmlns:local="clr-namespace:RateCalc" xmlns:local1="clr-namespace:Functions"
+                 Title="RateCalcOpening" Height="600" Width="1100" MinHeight="600" MinWidth="1100" WindowStartupLocation="CenterScreen"
+ResizeMode="CanResize"
+ShowTitleBar="False"
+ShowCloseButton="False"
+ShowMinButton="False"
+ShowMaxRestoreButton="False"
+BorderThickness="0"
+WindowStyle="SingleBorderWindow"
+AllowsTransparency="False"
+GlowBrush="{DynamicResource MahApps.Brushes.GlowAccent}">
+    <mah:MetroWindow.Resources>
+        <local1:HalfValueConverter x:Key="HalfValueConverter"/>
+    </mah:MetroWindow.Resources>
+
+    <Grid UseLayoutRounding="True" ClipToBounds="True" Background="{StaticResource SecondDarkBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid SnapsToDevicePixels="True" UseLayoutRounding="True" Grid.Row="0" Background="#FF232736" MouseLeftButtonDown="taskBarDrag_Down" Height="Auto" Width="Auto">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Click="closeBtn_Clicked" Cursor="Hand" Margin="15,0,0,0" Grid.Row="1" Width="15" Height="15" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Grid>
+                                            <Rectangle x:Name="rect" RadiusX="8" RadiusY="8" Stroke="#141E36" StrokeThickness="0.1" RenderOptions.BitmapScalingMode="HighQuality" />
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="rect" Property="Fill">
+                                                    <Setter.Value>
+                                                        <ImageBrush ImageSource="pack://application:,,,/Assets/Icons/closeIconActive.png" Stretch="UniformToFill"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="False">
+                                                <Setter TargetName="rect" Property="Fill">
+                                                    <Setter.Value>
+                                                        <ImageBrush ImageSource="pack://application:,,,/Assets/Icons/closeIcon.png" Stretch="UniformToFill"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Click="minBtn_Clicked" Cursor="Hand" Margin="5,0,0,0" Grid.Row="1" Width="15" Height="15" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Grid>
+                                            <Rectangle x:Name="rect" RadiusX="8" RadiusY="8" Stroke="#141E36" StrokeThickness="0.1" RenderOptions.BitmapScalingMode="HighQuality" />
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="rect" Property="Fill">
+                                                    <Setter.Value>
+                                                        <ImageBrush ImageSource="pack://application:,,,/Assets/Icons/minIconActive.png" Stretch="UniformToFill"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="False">
+                                                <Setter TargetName="rect" Property="Fill">
+                                                    <Setter.Value>
+                                                        <ImageBrush ImageSource="pack://application:,,,/Assets/Icons/minIcon.png" Stretch="UniformToFill"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Click="maxBtn_Clicked" Cursor="Hand" Margin="5,0,0,0" Grid.Row="1" Width="15" Height="15" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Grid>
+                                            <Rectangle x:Name="rect" RadiusX="8" RadiusY="8" Stroke="#141E36" StrokeThickness="0.1" RenderOptions.BitmapScalingMode="HighQuality" />
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="rect" Property="Fill">
+                                                    <Setter.Value>
+                                                        <ImageBrush ImageSource="pack://application:,,,/Assets/Icons/maxIconActive.png" Stretch="UniformToFill"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="False">
+                                                <Setter TargetName="rect" Property="Fill">
+                                                    <Setter.Value>
+                                                        <ImageBrush ImageSource="pack://application:,,,/Assets/Icons/maxIcon.png" Stretch="UniformToFill"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="83"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" HorizontalAlignment="Left" Background="{StaticResource SemiDarkBackground}">
+                <Border>
+                    <StackPanel Width="83">
+                        <!-- Tek bir XAML dosyası içinde buton hover problemi çözümü -->
+
+                        <Button x:Name="homeBtn"
+                                Cursor="Hand"
+                                Tag=""
+                                Click="pageChange_Clicked"
+                                Padding="0"
+                                Margin="0"
+                                HorizontalContentAlignment="Stretch" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource HalfValueConverter}}"
+                                VerticalContentAlignment="Center">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#282D40"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1.5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="1.5*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="14*"/>
+                                                        <RowDefinition Height="15*"/>
+                                                        <RowDefinition Height="9*"/>
+                                                        <RowDefinition Height="15*"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <!-- Icon -->
+                                                    <Grid Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Grid.RowSpan="2">
+                                                        <StackPanel>
+                                                            <Path Data="{DynamicResource home}" Stretch="UniformToFill" HorizontalAlignment="Center">
+                                                                <Path.Fill>
+                                                                    <SolidColorBrush x:Name="PathFill" Color="White"/>
+                                                                </Path.Fill>
+                                                            </Path>
+                                                        </StackPanel>
+                                                    </Grid>
+
+                                                    <!-- Left Border -->
+                                                    <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="4">
+                                                        <Border x:Name="LeftBorder"
+                                        Width="5"
+                                        Height="35"
+                                        Margin="-2,0,0,0"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        CornerRadius="0,50,50,0"
+                                        Opacity="0">
+                                                            <Border.Background>
+                                                                <SolidColorBrush x:Name="BorderColor" Color="Transparent"/>
+                                                            </Border.Background>
+                                                        </Border>
+                                                    </Grid>
+                                                </Grid>
+
+                                                <ControlTemplate.Triggers>
+                                                    <!-- Tag == active -->
+                                                    <Trigger Property="Tag" Value="active">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                To="#FF3A3F5A" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                                Storyboard.TargetProperty="Color"
+                                To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                                Storyboard.TargetProperty="Color"
+                                To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                                 Storyboard.TargetProperty="Opacity"
+                                 To="1" Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                To="#282D40" Duration="0:0:0.01"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                                Storyboard.TargetProperty="Color"
+                                To="White" Duration="0:0:0.01"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                                Storyboard.TargetProperty="Color"
+                                To="Transparent" Duration="0:0:0.01"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                                 Storyboard.TargetProperty="Opacity"
+                                 To="0" Duration="0:0:0.1"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+
+                                                    <!-- Hover animasyonları (tag boşsa) -->
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="IsMouseOver" Value="True"/>
+                                                            <Condition Property="Tag" Value=""/>
+                                                        </MultiTrigger.Conditions>
+                                                        <MultiTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                            To="#FF3A3F5A" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                                                            Storyboard.TargetProperty="Color"
+                                                            To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                                                            Storyboard.TargetProperty="Color"
+                                                            To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="1" Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </MultiTrigger.EnterActions>
+                                                        <MultiTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard FillBehavior="Stop">
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                            To="#282D40" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                                                            Storyboard.TargetProperty="Color"
+                                                            To="White" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                                                            Storyboard.TargetProperty="Color"
+                                                            To="Transparent" Duration="0:0:0.2"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0" Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </MultiTrigger.ExitActions>
+                                                    </MultiTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+
+                        <!-- Billing -->
+                        <Button x:Name="billinBtn"
+                                Cursor="Hand"
+                                Tag=""
+                                Click="pageChange_Clicked"
+                                Padding="0"
+                                Margin="0"
+                                HorizontalContentAlignment="Stretch" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource HalfValueConverter}}"
+                                VerticalContentAlignment="Center">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#282D40"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1.5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="1.5*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="14*"/>
+                                                        <RowDefinition Height="15*"/>
+                                                        <RowDefinition Height="9*"/>
+                                                        <RowDefinition Height="15*"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <!-- Icon -->
+                                                    <Grid Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Grid.RowSpan="2">
+                                                        <StackPanel>
+                                                            <Path Data="{DynamicResource billing}" Stretch="UniformToFill" HorizontalAlignment="Center">
+                                                                <Path.Fill>
+                                                                    <SolidColorBrush x:Name="PathFill" Color="White"/>
+                                                                </Path.Fill>
+                                                            </Path>
+                                                        </StackPanel>
+                                                    </Grid>
+
+                                                    <!-- Left Border -->
+                                                    <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="4">
+                                                        <Border x:Name="LeftBorder"
+                                Width="5"
+                                Height="35"
+                                Margin="-2,0,0,0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                CornerRadius="0,50,50,0"
+                                Opacity="0">
+                                                            <Border.Background>
+                                                                <SolidColorBrush x:Name="BorderColor" Color="Transparent"/>
+                                                            </Border.Background>
+                                                        </Border>
+                                                    </Grid>
+                                                </Grid>
+
+                                                <ControlTemplate.Triggers>
+                                                    <!-- Tag == active -->
+                                                    <Trigger Property="Tag" Value="active">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                        Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                        To="#FF3A3F5A" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                        Storyboard.TargetProperty="Color"
+                        To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                        Storyboard.TargetProperty="Color"
+                        To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                         Storyboard.TargetProperty="Opacity"
+                         To="1" Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                        Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                        To="#282D40" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                        Storyboard.TargetProperty="Color"
+                        To="White" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                        Storyboard.TargetProperty="Color"
+                        To="Transparent" Duration="0:0:0.2"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                         Storyboard.TargetProperty="Opacity"
+                         To="0" Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+                                                    <Trigger Property="Tag" Value="">
+                                                        <Trigger.EnterActions>
+                                                        </Trigger.EnterActions>
+                                                    </Trigger>
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="IsMouseOver" Value="True"/>
+                                                            <Condition Property="Tag" Value=""/>
+                                                        </MultiTrigger.Conditions>
+                                                        <MultiTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                    To="#FF3A3F5A" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                                                    Storyboard.TargetProperty="Color"
+                                                    To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                                                    Storyboard.TargetProperty="Color"
+                                                    To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="1" Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </MultiTrigger.EnterActions>
+                                                        <MultiTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard FillBehavior="Stop">
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                    To="#282D40" Duration="0:0:0.1"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                                                    Storyboard.TargetProperty="Color"
+                                                    To="White" Duration="0:0:0.1"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                                                    Storyboard.TargetProperty="Color"
+                                                    To="Transparent" Duration="0:0:0.1"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="0" Duration="0:0:0.1"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </MultiTrigger.ExitActions>
+                                                    </MultiTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <!-- Settings -->
+                        <Button x:Name="settingsBtn"
+                                Cursor="Hand"
+                                Tag=""
+                                Click="pageChange_Clicked"
+                                Padding="0"
+                                Margin="0"
+                                HorizontalContentAlignment="Stretch" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource HalfValueConverter}}"
+                                VerticalContentAlignment="Center">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#282D40"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1.5*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="1.5*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="14*"/>
+                                                        <RowDefinition Height="15*"/>
+                                                        <RowDefinition Height="9*"/>
+                                                        <RowDefinition Height="15*"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <!-- Icon -->
+                                                    <Grid Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Grid.RowSpan="2">
+                                                        <StackPanel>
+                                                            <Path Data="{DynamicResource settings}" Stretch="UniformToFill" HorizontalAlignment="Center">
+                                                                <Path.Fill>
+                                                                    <SolidColorBrush x:Name="PathFill" Color="White"/>
+                                                                </Path.Fill>
+                                                            </Path>
+                                                        </StackPanel>
+                                                    </Grid>
+
+                                                    <!-- Left Border -->
+                                                    <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="4">
+                                                        <Border x:Name="LeftBorder"
+        Width="5"
+        Height="35"
+        Margin="-2,0,0,0"
+        VerticalAlignment="Center"
+        HorizontalAlignment="Left"
+        CornerRadius="0,50,50,0"
+        Opacity="0">
+                                                            <Border.Background>
+                                                                <SolidColorBrush x:Name="BorderColor" Color="Transparent"/>
+                                                            </Border.Background>
+                                                        </Border>
+                                                    </Grid>
+                                                </Grid>
+
+                                                <ControlTemplate.Triggers>
+                                                    <!-- Tag == active -->
+                                                    <Trigger Property="Tag" Value="active">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+To="#FF3A3F5A" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+Storyboard.TargetProperty="Color"
+To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+Storyboard.TargetProperty="Color"
+To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+ Storyboard.TargetProperty="Opacity"
+ To="1" Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+To="#282D40" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+Storyboard.TargetProperty="Color"
+To="White" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+Storyboard.TargetProperty="Color"
+To="Transparent" Duration="0:0:0.2"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+ Storyboard.TargetProperty="Opacity"
+ To="0" Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+
+                                                    <!-- Hover animasyonları (tag boşsa) -->
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="IsMouseOver" Value="True"/>
+                                                            <Condition Property="Tag" Value=""/>
+                                                        </MultiTrigger.Conditions>
+                                                        <MultiTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                            To="#FF3A3F5A" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                            Storyboard.TargetProperty="Color"
+                            To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                            Storyboard.TargetProperty="Color"
+                            To="#DA70D6" Duration="0:0:0.2"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                             Storyboard.TargetProperty="Opacity"
+                             To="1" Duration="0:0:0.2"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </MultiTrigger.EnterActions>
+                                                        <MultiTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard FillBehavior="Stop">
+                                                                    <ColorAnimation Storyboard.TargetName="RootGrid"
+                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                            To="#282D40" Duration="0:0:0.1"/>
+                                                                    <ColorAnimation Storyboard.TargetName="PathFill"
+                            Storyboard.TargetProperty="Color"
+                            To="White" Duration="0:0:0.1"/>
+                                                                    <ColorAnimation Storyboard.TargetName="BorderColor"
+                            Storyboard.TargetProperty="Color"
+                            To="Transparent" Duration="0:0:0.1"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0" Duration="0:0:0.1"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </MultiTrigger.ExitActions>
+                                                    </MultiTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <Grid Grid.Column="1">
+                <ContentControl x:Name="MainContent"/>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</mah:MetroWindow>

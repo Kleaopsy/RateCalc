@@ -1,0 +1,22 @@
+﻿<Application x:Class="RateCalc.App"  
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+             xmlns:local="clr-namespace:RateCalc">  
+    <Application.Resources>  
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assets/Icons/Icons.xaml"/>
+                <ResourceDictionary Source="/Assets/Colors/Colors.xaml"/>
+                <ResourceDictionary Source="/Assets/Styles/Styles.xaml"/>
+                
+                <ResourceDictionary Source="Assets/Languages/tr.xaml" />
+                <ResourceDictionary Source="Assets/Languages/en.xaml" />
+                <ResourceDictionary Source="Assets/Languages/fr.xaml" />
+                <ResourceDictionary Source="Assets/Languages/de.xaml" />
+                <ResourceDictionary Source="Assets/Languages/es.xaml" />
+            </ResourceDictionary.MergedDictionaries>  
+        </ResourceDictionary>  
+    </Application.Resources>  
+</Application>
+
+    

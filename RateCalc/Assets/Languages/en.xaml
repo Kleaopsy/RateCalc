@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+    <System:String x:Key="HelloWorldLabel">Hello</System:String>
+    <!-- Billing Layout -->
+    <System:String x:Key="BillingLayoutLabel1">Billing</System:String>
+    <System:String x:Key="BillingInterestLabel1">Interest Amount:</System:String>
+    <System:String x:Key="BillingIntererstInRBox1">Monthly</System:String>
+    <System:String x:Key="BillingIntererstInRBox2">Yearly</System:String>
+    <System:String x:Key="BillingInterestTextBox1">Enter monthly/yearly interest rate... e.g., 12</System:String>
+    <System:String x:Key="BillingMonthlyInLabel">Monthly Incomes:</System:String>
+    <System:String x:Key="BillingMonthlyInTextBox1" xml:space="preserve">Enter monthly incomes... One line per month: e.g.
+1=&gt;30000
+2=&gt;5000
+3=&gt;0</System:String>
+    <System:String x:Key="BillingInterestOutLabel1">Interest Income:</System:String>
+    <System:String x:Key="BillingInterestOutRBox1">Transfer In</System:String>
+    <System:String x:Key="BillingInterestOutRBox2">Transfer Out</System:String>
+    <System:String x:Key="BillingInterestCalcBtn1">Calculate</System:String>
+    <System:String x:Key="BillingInterestCalcLabel1">Months must be entered in ascending order. Example: 1=&gt;..., 2=&gt;..., 3=&gt;...</System:String>
+    <System:String x:Key="BillingInterestCalcLabel2">Month numbers must start from 1 and cannot include 0.</System:String>
+
+    <!-- Settings Layout -->
+    <System:String x:Key="SettingLayoutLabel1">Settings</System:String>
+    <System:String x:Key="SettingLayoutLanguagesLabel1">Languages:</System:String>
+    <System:String x:Key="SettingLayoutSettingBtn1">Save</System:String>
+</ResourceDictionary>

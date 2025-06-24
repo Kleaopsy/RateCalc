@@ -1,0 +1,175 @@
+﻿<UserControl x:Class="RateCalc.Assets.Layouts.SettingsLayout"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RateCalc.Assets.Layouts" xmlns:local1="clr-namespace:Functions"
+             mc:Ignorable="d" 
+             d:DesignHeight="570" d:DesignWidth="1020">
+
+    <Grid>
+        <!-- Settings -->
+        <Label Margin="10,10,0,0" FontFamily="Calibri" FontSize="30" FontWeight="Medium" Content="{DynamicResource SettingLayoutLabel1}" Foreground="White" HorizontalAlignment="Left"/>
+        <!-- Languages -->
+        <Label Margin="0,15,120,0" FontFamily="Calibri" FontSize="18" FontWeight="Medium" Content="{DynamicResource SettingLayoutLanguagesLabel1}" Foreground="White" HorizontalAlignment="Right"/>
+        <!-- Language Bar -->
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
+            <ComboBox x:Name="LanguageComboBox"
+Width="100" FontFamily="Calibri" FontSize="16" FontWeight="Medium"
+Height="30" Margin="0,17,15,0" HorizontalAlignment="Right" Padding="4"
+SelectedIndex="0" Style="{StaticResource DarkComboBoxStyle}">
+
+                <!-- Türkçe -->
+
+                <ComboBoxItem Tag="tr">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Rectangle Width="20"
+             Height="20" 
+             RadiusX="4"
+             RadiusY="4"
+             Stroke="#141E36"
+             StrokeThickness="0.5"
+             RenderOptions.BitmapScalingMode="HighQuality"
+             Margin="0,0,4,0">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="pack://application:,,,/Assets/Images/trFlag.jpg"
+                      Stretch="UniformToFill" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Text="Türkçe" Foreground="White"
+             FontFamily="Calibri" FontSize="12" FontWeight="Medium"
+             VerticalAlignment="Center" />
+                    </StackPanel>
+                </ComboBoxItem>
+
+                <!-- English -->
+                <ComboBoxItem Tag="en">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Rectangle Width="20"
+             Height="20"
+             RadiusX="4"
+             RadiusY="4"
+             Stroke="#141E36"
+             StrokeThickness="0.5"
+             RenderOptions.BitmapScalingMode="HighQuality"
+             Margin="0,0,4,0">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="pack://application:,,,/Assets/Images/enFlag.png"
+                      Stretch="UniformToFill" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Text="English" Foreground="White"
+             FontFamily="Calibri" FontSize="12" FontWeight="Medium"
+             VerticalAlignment="Center" />
+                    </StackPanel>
+                </ComboBoxItem>
+
+                <!-- Français -->
+                <ComboBoxItem Tag="fr">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Rectangle Width="20"
+             Height="20"
+             RadiusX="4"
+             RadiusY="4"
+             Stroke="#141E36"
+             StrokeThickness="0.5"
+             RenderOptions.BitmapScalingMode="HighQuality"
+             Margin="0,0,4,0">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="pack://application:,,,/Assets/Images/frFlag.png"
+                      Stretch="UniformToFill" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Text="Français" Foreground="White"
+             FontFamily="Calibri" FontSize="12" FontWeight="Medium"
+             VerticalAlignment="Center" />
+                    </StackPanel>
+                </ComboBoxItem>
+
+                <!-- Deutchland -->
+                <ComboBoxItem Tag="de">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Rectangle Width="20"
+             Height="20"
+             RadiusX="4"
+             RadiusY="4"
+             Stroke="#141E36"
+             StrokeThickness="0.5"
+             RenderOptions.BitmapScalingMode="HighQuality"
+             Margin="0,0,4,0">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="pack://application:,,,/Assets/Images/deFlag.png"
+                      Stretch="UniformToFill" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Text="Deutsch" Foreground="White"
+             FontFamily="Calibri" FontSize="12" FontWeight="Medium"
+             VerticalAlignment="Center" />
+                    </StackPanel>
+                </ComboBoxItem>
+
+                <!--Spanish -->
+                <ComboBoxItem Tag="es">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Rectangle Width="20"
+             Height="20"
+             RadiusX="4"
+             RadiusY="4"
+             Stroke="#141E36"
+             StrokeThickness="0.5"
+             RenderOptions.BitmapScalingMode="HighQuality"
+             Margin="0,0,4,0">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="pack://application:,,,/Assets/Images/esFlag.jpg"
+                      Stretch="UniformToFill" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Text="Español" Foreground="White"
+             FontFamily="Calibri" FontSize="12" FontWeight="Medium"
+             VerticalAlignment="Center" />
+                    </StackPanel>
+                </ComboBoxItem>
+            </ComboBox>
+        </Grid>
+        <Button x:Name="SaveBtn" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+        Content="{DynamicResource SettingLayoutSettingBtn1}"
+        Width="100"
+        Height="35"
+        Click="SaveBtn_Clicked"
+        Visibility="Collapsed"
+        Background="#FF4CAF50"
+        Foreground="White"
+        FontWeight="Bold"
+        FontSize="14"
+        Cursor="Hand"
+        BorderThickness="0"
+        Margin="0,0,15,30"
+        RenderTransformOrigin="0.5,0.5">
+            <Button.RenderTransform>
+                <TranslateTransform x:Name="SaveBtnTranslate" X="-100" />
+            </Button.RenderTransform>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#FF4CAF50" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="6" 
+                                Padding="8,4">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF388E3C" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+    </Grid>
+</UserControl>
