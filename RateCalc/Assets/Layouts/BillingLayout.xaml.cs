@@ -66,14 +66,75 @@ namespace RateCalc.Assets.Layouts
                 CalcGrid();
         }
 
+        private void calcBtmSave_Clicked(object sender, RoutedEventArgs e)
+        {
+            var _lang = SettingsFunctions.ControlLang();
+            var title = "";
+            var btnText = "";
+            var title2 = "";
+            switch (_lang)
+            {
+                case "en":
+                    title = "Enter a name for this calculation:";
+                    btnText = "Save Calculation";
+                    title2 = "New Calculation";
+                    break;
+                case "tr":
+                    title = "Bu hesaplama için bir isim girin:";
+                    btnText = "Hesaplama Kaydet";
+                    title2 = "Yeni Hesaplama";
+                    break;
+                case "fr":
+                    title = "Entrez un nom pour ce calcul:";
+                    btnText = "Enregistrer le calcul";
+                    title2 = "Nouveau calcul";
+                    break;
+                case "de":
+                    title = "Geben Sie einen Namen für diese Berechnung ein:";
+                    btnText = "Berechnung speichern";
+                    title2 = "Neue Berechnung";
+                    break;
+                case "es":
+                    title = "Ingrese un nombre para este cálculo:";
+                    btnText = "Guardar Cálculo";
+                    title2 = "Nuevo Cálculo";
+                    break;
+                default:
+                    title = "Enter a name for this calculation:";
+                    btnText = "Save Calculation";
+                    title2 = "New Calculation";
+                    break;
+            }
 
-        bool __is_monthly_interest = false, __is_interest_in = true;
+            var dialog = new calcSaveDialog(title, btnText, title2);
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow != null)
+            {
+                dialog.Owner = parentWindow;
+            }
+
+            if (dialog.ShowDialog() == true)
+            {
+                string hesapIsmi = dialog.ResponseText;
+                if (!string.IsNullOrEmpty(hesapIsmi.Trim()))
+                {
+                    MessageBox.Show($"'{hesapIsmi}' ismiyle kaydedildi!", "Başarılı");
+                    // Kaydetme işlemlerin...
+                }
+            }
+        }
+
+        bool __is_monthly_interest = false, __is_interest_in = true, __calc_before = false;
         // Button
 
         Dictionary<int, decimal> newMonthlyIncome = new Dictionary<int, decimal>();
         Dictionary<int, decimal> monthlyInterest = new Dictionary<int, decimal>();
         private void calcBtm_Clicked(object sender, RoutedEventArgs e)
         {
+            if (__calc_before)
+            {
+                HideSaveButton2();
+            }
             newMonthlyIncome.Clear();
             monthlyInterest.Clear();
 
@@ -117,6 +178,12 @@ namespace RateCalc.Assets.Layouts
             }
 
             CalcGrid();
+
+            if (!__calc_before)
+            {
+                __calc_before = true;
+            }
+            ShowSaveButton2();
         }
 
 
@@ -341,6 +408,38 @@ namespace RateCalc.Assets.Layouts
             };
             transform?.BeginAnimation(TranslateTransform.XProperty, anim);
         }
+        private void ShowSaveButton2()
+        {
+            CalcBtnSave.Visibility = Visibility.Visible;
+
+            var anim = new DoubleAnimation
+            {
+                From = -100,
+                To = 0,
+                Duration = TimeSpan.FromMilliseconds(300),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
+
+            var transform = CalcBtnSave.RenderTransform as TranslateTransform;
+            transform?.BeginAnimation(TranslateTransform.XProperty, anim);
+        }
+        private void HideSaveButton2()
+        {
+            var anim = new DoubleAnimation
+            {
+                From = 0,
+                To = -100,
+                Duration = TimeSpan.FromMilliseconds(300),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+            };
+
+            var transform = CalcBtnSave.RenderTransform as TranslateTransform;
+            anim.Completed += (s, e) =>
+            {
+                CalcBtnSave.Visibility = Visibility.Collapsed;
+            };
+            transform?.BeginAnimation(TranslateTransform.XProperty, anim);
+        }
 
         private void AnimateLabelIn(System.Windows.Controls.Label label)
         {
@@ -455,9 +554,9 @@ namespace RateCalc.Assets.Layouts
             calcResultGrid.ItemsSource = results;
             chartViewModel.UpdateChart(results);
 
-            if(graphics1.Visibility == Visibility.Hidden)
+            if (graphics1.Visibility == Visibility.Hidden)
                 graphics1.Visibility = Visibility.Visible;
-            if(calcResultGrid.Visibility == Visibility.Hidden)
+            if (calcResultGrid.Visibility == Visibility.Hidden)
                 calcResultGrid.Visibility = Visibility.Visible;
         }
     }
@@ -590,7 +689,7 @@ namespace RateCalc.Assets.Layouts
                     LabelsPaint = new SolidColorPaint(SKColors.White),
                     NamePaint = new SolidColorPaint(SKColors.White)
                 }
-            }; 
+            };
             YAxes = new Axis[]{
                 new Axis
                 {
