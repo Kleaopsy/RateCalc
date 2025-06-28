@@ -26,6 +26,7 @@
     <System:String x:Key="CalcDataGrid1Col4">Toplam Faiz</System:String>
     <System:String x:Key="CalcDataGrid1Col5">Birikmiş Toplam</System:String>
     <System:String x:Key="BillingInterestCalcBtnSave1">Hesabı Kaydet</System:String>
+    <System:String x:Key="BillingInterestCalcSaveLabel1">Hesap Kaydedildi</System:String>
     <!-- Settings Layout -->
     <System:String x:Key="SettingLayoutLabel1">Ayarlar</System:String>
     <System:String x:Key="SettingLayoutLanguagesLabel1">Diller:</System:String>

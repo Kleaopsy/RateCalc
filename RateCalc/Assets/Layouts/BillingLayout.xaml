@@ -122,7 +122,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
             <lvc:CartesianChart
                 x:Name="graphics1" Visibility="Hidden"
@@ -161,11 +161,22 @@
                     <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col5}" Binding="{Binding NMI}" Width="0.29*" HeaderStyle="{StaticResource LastColumnHeaderStyle}" ElementStyle="{StaticResource DarkTextColumnStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <StackPanel Orientation="Vertical" Grid.Row="2">
+            <Label x:Name="interestCalcSaveLabel1"
+                   Content="{DynamicResource BillingInterestCalcSaveLabel1}"
+                   Tag=""
+                   Margin="0,10,0,0" Padding="0"
+                   Foreground="#FF4CAF50"
+                   Visibility="Collapsed"
+                   RenderTransformOrigin="0,0">
+                <Label.RenderTransform>
+                    <TranslateTransform X="-100"/>
+                </Label.RenderTransform>
+            </Label>
             <Button x:Name="CalcBtnSave" VerticalAlignment="Bottom" HorizontalAlignment="Left"
                 Content="{DynamicResource BillingInterestCalcBtnSave1}"
                 Click="calcBtmSave_Clicked"
-                Width="120" Grid.Row="2"
-                Height="35"
+                Width="120" Height="35"
                 Visibility="Collapsed"
                 Background="#FF4CAF50"
                 Foreground="White"
@@ -173,7 +184,7 @@
                 FontSize="14"
                 Cursor="Hand"
                 BorderThickness="0"
-                Margin="0,15,0,0"
+                Margin="0,5,0,0"
                 RenderTransformOrigin="0.5,0.5">
                 <Button.RenderTransform>
                     <TranslateTransform x:Name="SaveBtnTranslate2" X="-100" />
@@ -200,7 +211,8 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-            </Button>
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

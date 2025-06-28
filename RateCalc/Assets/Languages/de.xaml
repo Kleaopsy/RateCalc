@@ -26,6 +26,7 @@
     <System:String x:Key="CalcDataGrid1Col4">Gesamtzinsen</System:String>
     <System:String x:Key="CalcDataGrid1Col5">Gesamtsumme</System:String>
     <System:String x:Key="BillingInterestCalcBtnSave1">Berechnung Speichern</System:String>
+    <System:String x:Key="BillingInterestCalcSaveLabel1">Berechnung Gespeichert</System:String>
     <!-- Settings Layout -->
     <System:String x:Key="SettingLayoutLabel1">Einstellungen</System:String>
     <System:String x:Key="SettingLayoutLanguagesLabel1">Sprachen:</System:String>

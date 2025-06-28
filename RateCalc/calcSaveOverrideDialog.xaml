@@ -1,14 +1,15 @@
-﻿<mah:MetroWindow x:Class="RateCalc.calcSaveDialog"
+﻿<mah:MetroWindow x:Class="RateCalc.calcSaveOverrideDialog"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                 Title="Input" Height="210" Width="400"
-                 WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-                 ShowTitleBar="False"
+                 Title="Confirm" Height="210" Width="400"
+                 WindowStartupLocation="CenterOwner" ResizeMode="NoResize"                
+                ShowTitleBar="False"
                 ShowCloseButton="False"
                 ShowMinButton="False"
                 ShowMaxRestoreButton="False"
                 BorderThickness="0"
+                Foreground="White"
                 WindowStyle="SingleBorderWindow"
                 AllowsTransparency="False"
                  Background="{StaticResource SemiDarkBackground}">
@@ -16,7 +17,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -24,26 +24,21 @@
             <Label x:Name="lblQuestionTitle" VerticalAlignment="Center"
                Foreground="White" FontSize="12" Margin="0,0,0,0"/>
         </Grid>
+        <Label x:Name="lblMessage" Grid.Row="1" 
+               Foreground="White" FontSize="12"  Margin="15,10,15,0"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               HorizontalContentAlignment="Center"/>
 
-        <Label Margin="15,10,15,10" x:Name="lblQuestion" Grid.Row="1" 
-               Foreground="White" FontSize="12"/>
-
-        <TextBox x:Name="txtResponse" Grid.Row="2"  Margin="15,0,15,10"
-                 Background="{StaticResource SecondDarkBackground}"
-                 Foreground="White" FontSize="12" Padding="5"
-                 BorderBrush="{StaticResource LightSecondDarkBackground}"
-                 KeyDown="txtResponse_KeyDown"/>
-
-        <StackPanel Grid.Row="3" Orientation="Horizontal"  
-                    HorizontalAlignment="Right" Margin="15,15,15,15">
-            <Button x:Name="btnOK" Content="OK" Width="75" Height="25" 
-                    Margin="0,0,10,0" IsDefault="True"
+        <StackPanel Grid.Row="2" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Margin="15,20,15,15">
+            <Button x:Name="btnYes" Content="Yes" Width="80" Height="30" 
+                    Margin="0,0,15,0" IsDefault="True"
                     Background="{StaticResource SemiDarkBackground}"
-                    Foreground="White" Click="btnOK_Click"/>
-            <Button x:Name="btnCancel" Content="Cancel" Width="75" Height="25"
+                    Foreground="White" Click="btnYes_Click"/>
+            <Button x:Name="btnNo" Content="No" Width="80" Height="30"
                     IsCancel="True" 
                     Background="{StaticResource SemiDarkBackground}"
-                    Foreground="White" Click="btnCancel_Click"/>
+                    Foreground="White" Click="btnNo_Click"/>
         </StackPanel>
     </Grid>
 </mah:MetroWindow>

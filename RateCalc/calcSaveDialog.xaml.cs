@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using Functions;
+using MahApps.Metro.Controls;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -12,7 +13,7 @@ namespace RateCalc
         public calcSaveDialog(string question, string title, string defaultResponse = "")
         {
             InitializeComponent(); // Bu XAML'den gelecek
-            this.Title = title;
+            lblQuestionTitle.Content = title;
             lblQuestion.Content = question;
             txtResponse.Text = defaultResponse;
             txtResponse.Focus();
@@ -36,6 +37,10 @@ namespace RateCalc
             {
                 btnOK_Click(sender, e);
             }
+        }
+        private void taskBarDrag_Down(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            TaskFunctions.DragWindow(sender, e);
         }
     }
 }

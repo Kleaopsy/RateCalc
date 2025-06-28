@@ -26,6 +26,7 @@
     <System:String x:Key="CalcDataGrid1Col4">Interés Total</System:String>
     <System:String x:Key="CalcDataGrid1Col5">Total Acumulado</System:String>
     <System:String x:Key="BillingInterestCalcBtnSave1">Guardar Cálculo</System:String>
+    <System:String x:Key="BillingInterestCalcSaveLabel1">Cálculo Guardado</System:String>
     <!-- Settings Layout -->
     <System:String x:Key="SettingLayoutLabel1">Configuraciones</System:String>
     <System:String x:Key="SettingLayoutLanguagesLabel1">Idiomas:</System:String>

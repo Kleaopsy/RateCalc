@@ -5,13 +5,14 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-
 namespace RateCalc.Assets.Layouts
 {
     /// <summary>
@@ -66,7 +67,7 @@ namespace RateCalc.Assets.Layouts
                 CalcGrid();
         }
 
-        private void calcBtmSave_Clicked(object sender, RoutedEventArgs e)
+        private async void calcBtmSave_Clicked(object sender, RoutedEventArgs e)
         {
             var _lang = SettingsFunctions.ControlLang();
             var title = "";
@@ -115,13 +116,104 @@ namespace RateCalc.Assets.Layouts
 
             if (dialog.ShowDialog() == true)
             {
-                string hesapIsmi = dialog.ResponseText;
+                var response = dialog.ResponseText;
+                string hesapIsmi = response + "";
                 if (!string.IsNullOrEmpty(hesapIsmi.Trim()))
                 {
-                    MessageBox.Show($"'{hesapIsmi}' ismiyle kaydedildi!", "Başarılı");
-                    // Kaydetme işlemlerin...
+                    string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    string rateCalcPath = Path.Combine(documentsPath, "RateCalc");
+
+                    try
+                    {
+                        if (!Directory.Exists(rateCalcPath))
+                        {
+                            Directory.CreateDirectory(rateCalcPath);
+                        }
+
+                        // Mevcut kayıtları kontrol et
+                        var savedCalculations = SavedCalculationsReader.GetSavedCalculations();
+                        var existingCalc = savedCalculations.FirstOrDefault(c => c.Name.Equals(hesapIsmi.Trim(), StringComparison.OrdinalIgnoreCase));
+
+                        if (existingCalc != null)
+                        {
+                            // Dosya zaten var, üstüne yazma onayı iste
+                            var overwriteTitle = "";
+                            var overwriteMessage = "";
+
+                            switch (_lang)
+                            {
+                                case "en":
+                                    overwriteMessage = $"A calculation named '{hesapIsmi.Trim()}' already exists.\nDo you want to overwrite it?";
+                                    overwriteTitle = "File Already Exists";
+                                    break;
+                                case "tr":
+                                    overwriteMessage = $"'{hesapIsmi.Trim()}' adında bir hesaplama zaten mevcut.\nÜstüne yazmak istiyor musunuz?";
+                                    overwriteTitle = "Dosya Zaten Mevcut";
+                                    break;
+                                case "fr":
+                                    overwriteMessage = $"Un calcul nommé '{hesapIsmi.Trim()}' existe déjà.\nVoulez-vous l'écraser?";
+                                    overwriteTitle = "Fichier Déjà Existant";
+                                    break;
+                                case "de":
+                                    overwriteMessage = $"Eine Berechnung namens '{hesapIsmi.Trim()}' existiert bereits.\nMöchten Sie sie überschreiben?";
+                                    overwriteTitle = "Datei Bereits Vorhanden";
+                                    break;
+                                case "es":
+                                    overwriteMessage = $"Ya existe un cálculo llamado '{hesapIsmi.Trim()}'.\n¿Desea sobrescribirlo?";
+                                    overwriteTitle = "Archivo Ya Existe";
+                                    break;
+                                default:
+                                    overwriteMessage = $"A calculation named '{hesapIsmi.Trim()}' already exists.\nDo you want to overwrite it?";
+                                    overwriteTitle = "File Already Exists";
+                                    break;
+                            }
+
+                            var overwriteDialog = new calcSaveOverrideDialog(overwriteMessage, overwriteTitle);
+                            parentWindow = Window.GetWindow(this);
+                            if (parentWindow != null)
+                            {
+                                overwriteDialog.Owner = parentWindow;
+                            }
+
+                            if (overwriteDialog.ShowDialog() != true)
+                            {
+                                AnimateLabelOut(interestCalcSaveLabel1);
+                                return;
+                            }
+                        }
+
+                        List<MonthlyResult> results = GetCurrentResults();
+                        string fileName = $"{hesapIsmi.Trim()}.json";
+                        string filePath = Path.Combine(rateCalcPath, fileName);
+
+                        var saveData = new
+                        {
+                            Name = hesapIsmi.Trim(),
+                            SaveDate = DateTime.Now,
+                            Results = results
+                        };
+
+                        string jsonContent = System.Text.Json.JsonSerializer.Serialize(saveData, new JsonSerializerOptions
+                        {
+                            WriteIndented = true
+                        });
+
+                        await File.WriteAllTextAsync(filePath, jsonContent);
+                        AnimateLabelIn(interestCalcSaveLabel1);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error Code: {ex.Message}", "Error");
+                        AnimateLabelOut(interestCalcSaveLabel1);
+                    }
+                }
+                else
+                {
+                    AnimateLabelOut(interestCalcSaveLabel1);
                 }
             }
+            else
+                AnimateLabelOut(interestCalcSaveLabel1);
         }
 
         bool __is_monthly_interest = false, __is_interest_in = true, __calc_before = false;
@@ -133,7 +225,7 @@ namespace RateCalc.Assets.Layouts
         {
             if (__calc_before)
             {
-                HideSaveButton2();
+                HideSaveButton(CalcBtnSave);
             }
             newMonthlyIncome.Clear();
             monthlyInterest.Clear();
@@ -183,7 +275,7 @@ namespace RateCalc.Assets.Layouts
             {
                 __calc_before = true;
             }
-            ShowSaveButton2();
+            ShowSaveButton(CalcBtnSave);
         }
 
 
@@ -375,9 +467,9 @@ namespace RateCalc.Assets.Layouts
             }
         }
 
-        private void ShowSaveButton()
+        private void ShowSaveButton(Button btn)
         {
-            CalcBtn.Visibility = Visibility.Visible;
+            btn.Visibility = Visibility.Visible;
 
             var anim = new DoubleAnimation
             {
@@ -387,11 +479,11 @@ namespace RateCalc.Assets.Layouts
                 EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
             };
 
-            var transform = CalcBtn.RenderTransform as TranslateTransform;
+            var transform = btn.RenderTransform as TranslateTransform;
             transform?.BeginAnimation(TranslateTransform.XProperty, anim);
         }
 
-        private void HideSaveButton()
+        private void HideSaveButton(Button btn)
         {
             var anim = new DoubleAnimation
             {
@@ -401,42 +493,10 @@ namespace RateCalc.Assets.Layouts
                 EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
             };
 
-            var transform = CalcBtn.RenderTransform as TranslateTransform;
+            var transform = btn.RenderTransform as TranslateTransform;
             anim.Completed += (s, e) =>
             {
-                CalcBtn.Visibility = Visibility.Collapsed;
-            };
-            transform?.BeginAnimation(TranslateTransform.XProperty, anim);
-        }
-        private void ShowSaveButton2()
-        {
-            CalcBtnSave.Visibility = Visibility.Visible;
-
-            var anim = new DoubleAnimation
-            {
-                From = -100,
-                To = 0,
-                Duration = TimeSpan.FromMilliseconds(300),
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-            };
-
-            var transform = CalcBtnSave.RenderTransform as TranslateTransform;
-            transform?.BeginAnimation(TranslateTransform.XProperty, anim);
-        }
-        private void HideSaveButton2()
-        {
-            var anim = new DoubleAnimation
-            {
-                From = 0,
-                To = -100,
-                Duration = TimeSpan.FromMilliseconds(300),
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
-            };
-
-            var transform = CalcBtnSave.RenderTransform as TranslateTransform;
-            anim.Completed += (s, e) =>
-            {
-                CalcBtnSave.Visibility = Visibility.Collapsed;
+                btn.Visibility = Visibility.Collapsed;
             };
             transform?.BeginAnimation(TranslateTransform.XProperty, anim);
         }
@@ -492,11 +552,11 @@ namespace RateCalc.Assets.Layouts
         {
             if (interestPercentTBoxBool && interestCalcTBoxBool)
             {
-                ShowSaveButton();
+                ShowSaveButton(CalcBtn);
             }
             else
             {
-                HideSaveButton();
+                HideSaveButton(CalcBtn);
             }
         }
         void RemoveRightBorderOfLastColumnHeader(DataGrid dataGrid)
@@ -526,9 +586,10 @@ namespace RateCalc.Assets.Layouts
                     yield return childOfChild;
             }
         }
+        private List<MonthlyResult> currentResults = new List<MonthlyResult>();
         public void CalcGrid()
         {
-            List<MonthlyResult> results = new List<MonthlyResult>();
+            currentResults = new List<MonthlyResult>();
             char decSep = SettingsFunctions.ControlDecSep(), thoSep = SettingsFunctions.ControlThoSep();
             for (int month = 1; month <= monthlyIncome.Keys.Max(); month++)
             {
@@ -538,7 +599,7 @@ namespace RateCalc.Assets.Layouts
                     interestSum += monthlyInterest[preMonth];
                 }
 
-                results.Add(new MonthlyResult
+                currentResults.Add(new MonthlyResult
                 {
                     Month = month,
                     NMI = TaskFunctions.FormatDecimalWithCustomSeparators(newMonthlyIncome[month], 2, decSep, thoSep),
@@ -551,13 +612,17 @@ namespace RateCalc.Assets.Layouts
                     _MI = Math.Round(monthlyInterest[month], 2)
                 });
             }
-            calcResultGrid.ItemsSource = results;
-            chartViewModel.UpdateChart(results);
+            calcResultGrid.ItemsSource = currentResults;
+            chartViewModel.UpdateChart(currentResults);
 
             if (graphics1.Visibility == Visibility.Hidden)
                 graphics1.Visibility = Visibility.Visible;
             if (calcResultGrid.Visibility == Visibility.Hidden)
                 calcResultGrid.Visibility = Visibility.Visible;
+        }
+        private List<MonthlyResult> GetCurrentResults()
+        {
+            return currentResults;
         }
     }
     public class MonthlyResult

@@ -2,7 +2,9 @@
 using RateCalc.Assets.Layouts;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Runtime;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -249,6 +251,86 @@ namespace Functions
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+    }
+    public static class SavedCalculationsReader
+    {
+        public class SavedCalculation
+        {
+            public string Name { get; set; } = "";
+            public DateTime SaveDate { get; set; }
+            public List<MonthlyResult> Results { get; set; } = new List<MonthlyResult>();
+            public string FilePath { get; set; } = "";
+        }
+
+        public static List<SavedCalculation> GetSavedCalculations()
+        {
+            List<SavedCalculation> savedCalculations = new List<SavedCalculation>();
+
+            try
+            {
+                // Documents/RateCalc klasör yolunu al
+                string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string rateCalcPath = Path.Combine(documentsPath, "RateCalc");
+
+                // Klasör yoksa boş liste döndür
+                if (!Directory.Exists(rateCalcPath))
+                    return savedCalculations;
+
+                // .json dosyalarını bul
+                string[] jsonFiles = Directory.GetFiles(rateCalcPath, "*.json");
+
+                foreach (string filePath in jsonFiles)
+                {
+                    try
+                    {
+                        // JSON dosyasını oku
+                        string jsonContent = File.ReadAllText(filePath);
+
+                        // JSON'u deserialize et
+                        var jsonDocument = JsonDocument.Parse(jsonContent);
+                        var root = jsonDocument.RootElement;
+
+                        // Gerekli alanları kontrol et
+                        if (root.TryGetProperty("Name", out var nameElement) &&
+                            root.TryGetProperty("SaveDate", out var dateElement) &&
+                            root.TryGetProperty("Results", out var resultsElement))
+                        {
+                            var calculation = new SavedCalculation
+                            {
+                                Name = nameElement.GetString() ?? Path.GetFileNameWithoutExtension(filePath),
+                                SaveDate = dateElement.GetDateTime(),
+                                FilePath = filePath
+                            };
+
+                            // Results array'ini deserialize et
+                            if (resultsElement.ValueKind == JsonValueKind.Array)
+                            {
+                                var resultsJson = resultsElement.GetRawText();
+                                var results = JsonSerializer.Deserialize<List<MonthlyResult>>(resultsJson);
+                                calculation.Results = results ?? new List<MonthlyResult>();
+                            }
+
+                            savedCalculations.Add(calculation);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Bu dosya bozuk, atla ve devam et
+                        Console.WriteLine($"Hatalı dosya atlandı: {filePath} - {ex.Message}");
+                        continue;
+                    }
+                }
+
+                // Tarihe göre sırala (en yeni önce)
+                savedCalculations = savedCalculations.OrderByDescending(c => c.SaveDate).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return savedCalculations;
         }
     }
 }
