@@ -23,7 +23,6 @@ namespace RateCalc
         public StartLangSelect()
         {
             InitializeComponent();
-            SettingsFunctions.Control();
 
             bool isDark = ThemeHelper.ThemeHelper.IsWindowsInDarkMode();
             string themeName = isDark ? "Dark.Blue" : "Light.Blue";

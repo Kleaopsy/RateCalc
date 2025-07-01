@@ -3,6 +3,9 @@
     xmlns:System="clr-namespace:System;assembly=System.Runtime">
 
     <System:String x:Key="HelloWorldLabel">Merhaba</System:String>
+    <!-- Home Layout -->
+    <System:String x:Key="HomeLayoutLabel1">Henüz kaydedilmiş hesaplama yok</System:String>
+    <System:String x:Key="HomeLInterestLabel1">Yeni bir hesaplama yapın ve kaydedin</System:String>
     <!-- Billing Layout -->
     <System:String x:Key="BillingLayoutLabel1">Faturalandırma</System:String>
     <System:String x:Key="BillingInterestLabel1">Faiz Tutarı:</System:String>

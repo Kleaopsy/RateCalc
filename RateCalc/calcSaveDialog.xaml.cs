@@ -10,7 +10,7 @@ namespace RateCalc
     {
         public string? ResponseText { get; private set; } // Bu property'yi ekledim
 
-        public calcSaveDialog(string question, string title, string defaultResponse = "")
+        public calcSaveDialog(string question, string title, string defaultResponse)
         {
             InitializeComponent(); // Bu XAML'den gelecek
             lblQuestionTitle.Content = title;

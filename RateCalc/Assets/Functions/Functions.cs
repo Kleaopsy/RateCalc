@@ -316,7 +316,6 @@ namespace Functions
                     }
                     catch (Exception ex)
                     {
-                        // Bu dosya bozuk, atla ve devam et
                         Console.WriteLine($"Hatalı dosya atlandı: {filePath} - {ex.Message}");
                         continue;
                     }

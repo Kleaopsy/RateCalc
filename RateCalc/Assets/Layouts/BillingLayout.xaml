@@ -30,8 +30,8 @@
             <StackPanel Orientation="Vertical">
                 <StackPanel Height="50" VerticalAlignment="Top" Orientation="Horizontal" Margin="10,0,0,0">
                     <Label FontFamily="Calibri" FontSize="22" FontWeight="Medium" Content="{DynamicResource BillingInterestLabel1}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <RadioButton x:Name="interestMonthly" Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingIntererstInRBox1}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestIn" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                    <RadioButton IsChecked="True" Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingIntererstInRBox2}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestIn" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <RadioButton Checked="controllRadioBox" x:Name="interestMonthly" Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingIntererstInRBox1}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestIn" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <RadioButton Checked="controllRadioBox" x:Name="interestYearly" IsChecked="True" Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingIntererstInRBox2}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestIn" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 </StackPanel>
                 <TextBox Style="{StaticResource DarkTextBoxStyle}"  x:Name="interestPercent"
                          FontFamily="Calibri" FontWeight="Medium" FontSize="16" Margin="10,10,0,10"
@@ -73,49 +73,9 @@
                 <Label Margin="10,10,0,0" FontFamily="Calibri" FontSize="22" FontWeight="Medium" Content="{DynamicResource BillingInterestOutLabel1}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                 <StackPanel Height="50" VerticalAlignment="Top" Orientation="Horizontal" Margin="10,0,0,0">
-                    <RadioButton x:Name="interestIn" IsChecked="True" Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingInterestOutRBox1}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestOut" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                    <RadioButton Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingInterestOutRBox2}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestOut" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <RadioButton Checked="controllRadioBox" x:Name="interestIn" IsChecked="True" Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingInterestOutRBox1}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestOut" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <RadioButton Checked="controllRadioBox" x:Name="interestOut" Margin="10,11,0,0" Height="30" Content="{DynamicResource BillingInterestOutRBox2}" Style="{StaticResource DarkRadioButtonStyle}" GroupName="interestOut" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 </StackPanel>
-                <Button x:Name="CalcBtn" VerticalAlignment="Bottom" HorizontalAlignment="Left"
-                    Content="{DynamicResource BillingInterestCalcBtn1}"
-                    Click="calcBtm_Clicked"
-                    Width="100"
-                    Height="35"
-                    Visibility="Collapsed"
-                    Background="#FF4CAF50"
-                    Foreground="White"
-                    FontWeight="Bold"
-                    FontSize="14"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Margin="10,0,15,30"
-                    RenderTransformOrigin="0.5,0.5">
-                    <Button.RenderTransform>
-                        <TranslateTransform x:Name="SaveBtnTranslate" X="-100" />
-                    </Button.RenderTransform>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="#FF4CAF50" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="6" 
-                                Padding="8,4">
-                                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#FF388E3C" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Column="3" Grid.ColumnSpan="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -154,11 +114,11 @@
                   ColumnHeaderStyle="{StaticResource DarkDataGridHeaderStyle}"
                   CellStyle="{StaticResource DarkDataGridCellStyle}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col1}" Binding="{Binding Month}" Width="0.1*" ElementStyle="{StaticResource DarkTextColumnStyle}"/>
-                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col2}" Binding="{Binding M}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
-                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col3}" Binding="{Binding MI}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
-                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col4}" Binding="{Binding InterestSum}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
-                    <DataGridTextColumn Header="{StaticResource CalcDataGrid1Col5}" Binding="{Binding NMI}" Width="0.29*" HeaderStyle="{StaticResource LastColumnHeaderStyle}" ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{DynamicResource CalcDataGrid1Col1}" Binding="{Binding Month}" Width="0.1*" ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{DynamicResource CalcDataGrid1Col2}" Binding="{Binding M}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{DynamicResource CalcDataGrid1Col3}" Binding="{Binding MI}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{DynamicResource CalcDataGrid1Col4}" Binding="{Binding InterestSum}" Width="0.19*"  ElementStyle="{StaticResource DarkTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{DynamicResource CalcDataGrid1Col5}" Binding="{Binding NMI}" Width="0.29*" HeaderStyle="{StaticResource LastColumnHeaderStyle}" ElementStyle="{StaticResource DarkTextColumnStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel Orientation="Vertical" Grid.Row="2">

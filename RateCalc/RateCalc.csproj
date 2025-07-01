@@ -8,6 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <LangVersion>preview</LangVersion>
+    <ApplicationIcon>Assets\Icons\rateCalcIcon.ico</ApplicationIcon>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,11 +21,17 @@
     <None Remove="Assets\Icons\maxIconActive.png" />
     <None Remove="Assets\Icons\minIcon.png" />
     <None Remove="Assets\Icons\minIconActive.png" />
+    <None Remove="Assets\Icons\rateCalcIcon.ico" />
+    <None Remove="Assets\Icons\rateCalcIcon.png" />
     <None Remove="Assets\Images\deFlag.png" />
     <None Remove="Assets\Images\enFlag.png" />
     <None Remove="Assets\Images\esFlag.jpg" />
     <None Remove="Assets\Images\frFlag.png" />
     <None Remove="Assets\Images\trFlag.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Icons\rateCalcIcon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +59,12 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Icons\minIconActive.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Icons\rateCalcIcon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Icons\rateCalcIcon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\deFlag.png">

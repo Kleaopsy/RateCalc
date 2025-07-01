@@ -3,6 +3,9 @@
     xmlns:System="clr-namespace:System;assembly=System.Runtime">
 
     <System:String x:Key="HelloWorldLabel">Hola</System:String>
+    <!-- Home Layout -->
+    <System:String x:Key="HomeLayoutLabel1">No hay cálculos guardados aún</System:String>
+    <System:String x:Key="HomeLInterestLabel1">Realice un nuevo cálculo y guárdelo</System:String>
     <!-- Billing Layout -->
     <System:String x:Key="BillingLayoutLabel1">Facturación</System:String>
     <System:String x:Key="BillingInterestLabel1">Cantidad de intereses:</System:String>

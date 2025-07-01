@@ -24,13 +24,15 @@ namespace RateCalc.Assets.Layouts
     {
         char decimalSep = '.', thousandSep = ',';
         private ChartViewModel chartViewModel = new ChartViewModel();
-        public BillingLayout()
+        bool __isAuto = false;
+        public BillingLayout(bool p = false)
         {
             InitializeComponent();
             calcResultGrid.Loaded += (s, e) => RemoveRightBorderOfLastColumnHeader(calcResultGrid);
             Loaded += BillingLayout_Loaded;
             DataContext = chartViewModel;
             graphics1.LegendTextPaint = new SolidColorPaint(SKColors.White);
+            __isAuto = p;
         }
 
         bool interestPercentTBoxBool = false, interestCalcTBoxBool = false;
@@ -39,6 +41,12 @@ namespace RateCalc.Assets.Layouts
             RateCalcOpening? _mainWindow = System.Windows.Application.Current.MainWindow as RateCalcOpening;
             decimalSep = SettingsFunctions.ControlDecSep();
             thousandSep = SettingsFunctions.ControlThoSep();
+
+            calcResultGrid.Columns[0].Header = FindResource("CalcDataGrid1Col1");
+            calcResultGrid.Columns[1].Header = FindResource("CalcDataGrid1Col2");
+            calcResultGrid.Columns[2].Header = FindResource("CalcDataGrid1Col3");
+            calcResultGrid.Columns[3].Header = FindResource("CalcDataGrid1Col4");
+            calcResultGrid.Columns[4].Header = FindResource("CalcDataGrid1Col5");
 
             if (!interestPercentTBoxBool)
                 interestPercent.Text = interestPercent.Tag.ToString();
@@ -63,8 +71,146 @@ namespace RateCalc.Assets.Layouts
             interestPercent.TextChanged += interestPercentText_Changed;
             interestCalc.TextChanged += interestCalcText_Changed;
 
-            if (calcResultGrid.ItemsSource != null && calcResultGrid.Items.Cast<object>().Any())
+            if (calcResultGrid.ItemsSource != null && calcResultGrid.Items.Cast<object>().Any() && !__isAuto)
                 CalcGrid();
+            else if (__isAuto)
+                ManualDataGrid();
+        }
+
+        public void ManualDataGrid()
+        {
+            var designItems = __special_missin_for_named_calc_results.Select(r => new
+            {
+                Month = r.M,
+                monthlyIncome = TaskFunctions.FormatDecimalWithCustomSeparators(r._M, 2, SettingsFunctions.ControlDecSep(), SettingsFunctions.ControlThoSep()),
+                monthlyInterest = TaskFunctions.FormatDecimalWithCustomSeparators(r._InterestSum, 2, SettingsFunctions.ControlDecSep(), SettingsFunctions.ControlThoSep()),
+                newMonthlyIncome = TaskFunctions.FormatDecimalWithCustomSeparators(r._NMI, 2, SettingsFunctions.ControlDecSep(), SettingsFunctions.ControlThoSep()),
+                monthlyInterestAmount = TaskFunctions.FormatDecimalWithCustomSeparators(r._MI, 2, SettingsFunctions.ControlDecSep(), SettingsFunctions.ControlThoSep()),
+            }).ToList();
+
+            string _interestCalcText = "";
+            bool isZero = true;
+
+            // Faiz hesaplaması için gerekli değişkenler
+            decimal totalDeposited = 0;
+            decimal totalInterest = 0;
+
+            for (int i = 0; i < designItems.Count; i++)
+            {
+                _interestCalcText += $"{i + 1}=>{designItems[i].monthlyIncome}\n";
+
+                decimal monthlyDeposit = decimal.Parse(designItems[i].monthlyIncome.Replace(thousandSep.ToString(), "").Replace(decimalSep.ToString(), "."), CultureInfo.InvariantCulture);
+                if (monthlyDeposit != 0)
+                    isZero = false;
+
+                totalDeposited += monthlyDeposit;
+            }
+
+            // InterestCalc textbox'ını güncelle
+            interestCalc.TextChanged -= interestCalcText_Changed;
+            interestCalc.Text = _interestCalcText.TrimEnd('\n');
+            interestCalc.TextChanged += interestCalcText_Changed;
+
+            if (!isZero && designItems.Count >= 2)
+            {
+                // Son ayın değerlerini al
+                var lastMonth = designItems.Last();
+                var secondLastMonth = designItems[designItems.Count - 2];
+
+                decimal lastBalance = decimal.Parse(lastMonth.newMonthlyIncome.Replace(thousandSep.ToString(), "").Replace(decimalSep.ToString(), "."), CultureInfo.InvariantCulture);
+                decimal lastDeposit = decimal.Parse(lastMonth.monthlyIncome.Replace(thousandSep.ToString(), "").Replace(decimalSep.ToString(), "."), CultureInfo.InvariantCulture);
+                decimal lastMonthInterest = decimal.Parse(lastMonth.monthlyInterestAmount.Replace(thousandSep.ToString(), "").Replace(decimalSep.ToString(), "."), CultureInfo.InvariantCulture);
+
+                decimal secondLastBalance = decimal.Parse(secondLastMonth.newMonthlyIncome.Replace(thousandSep.ToString(), "").Replace(decimalSep.ToString(), "."), CultureInfo.InvariantCulture);
+
+                // Toplam faizi hesapla
+                totalInterest = decimal.Parse(lastMonth.monthlyInterest.Replace(thousandSep.ToString(), "").Replace(decimalSep.ToString(), "."), CultureInfo.InvariantCulture);
+
+                // Interest In/Out kontrolü
+                bool isInterestIn = false;
+                if (designItems.Count >= 2)
+                {
+                    // Eğer son ayın toplam bakiyesi = önceki ay bakiyesi + son ay yatırımı + faiz ise Interest IN
+                    decimal expectedBalanceWithInterest = secondLastBalance + lastDeposit + lastMonthInterest;
+                    decimal expectedBalanceWithoutInterest = secondLastBalance + lastDeposit;
+
+                    if (Math.Abs(lastBalance - expectedBalanceWithInterest) < 0.01m)
+                    {
+                        isInterestIn = true;
+                    }
+                    else if (Math.Abs(lastBalance - expectedBalanceWithoutInterest) < 0.01m)
+                    {
+                        isInterestIn = false;
+                    }
+                }
+
+                // Faiz oranını hesapla
+                decimal interestRate = 0;
+                if (totalDeposited > 0 && designItems.Count > 1)
+                {
+                    // Ortalama bakiye üzerinden faiz oranı hesapla
+                    decimal avgBalance = 0;
+                    for (int i = 0; i < designItems.Count - 1; i++)
+                    {
+                        decimal balance = decimal.Parse(designItems[i].newMonthlyIncome.Replace(thousandSep.ToString(), "").Replace(decimalSep.ToString(), "."), CultureInfo.InvariantCulture);
+                        avgBalance += balance;
+                    }
+                    avgBalance /= (designItems.Count - 1);
+
+                    if (avgBalance > 0)
+                    {
+                        // Aylık faiz oranı = son ayın faizi / önceki ayın bakiyesi
+                        interestRate = (lastMonthInterest / secondLastBalance) * 100;
+
+                        // Yıllık faiz oranına çevir
+                        interestRate *= 12;
+                    }
+                }
+
+                // UI kontrollerini güncelle
+                interestPercent.TextChanged -= interestPercentText_Changed;
+                interestPercent.Text = TaskFunctions.FormatDecimalWithCustomSeparators(Math.Round(interestRate, 2), 2, SettingsFunctions.ControlDecSep(), SettingsFunctions.ControlThoSep());
+                interestPercent.TextChanged += interestPercentText_Changed;
+
+                // Interest In/Out radio button'larını ayarla
+                interestIn.IsChecked = isInterestIn;
+                interestOut.IsChecked = !isInterestIn;
+
+                // Yıllık/Aylık seçimini ayarla (hesapladığımız oran yıllık)
+                interestYearly.IsChecked = true;
+                interestMonthly.IsChecked = false;
+
+                // Event handler'ları tetikle
+                interestPercentText_Changed(interestPercent, new TextChangedEventArgs(TextBox.TextChangedEvent, UndoAction.None));
+                interestCalcText_Changed(interestCalc, new TextChangedEventArgs(TextBox.TextChangedEvent, UndoAction.None));
+
+                // Hesaplamayı çalıştır
+                calcBtm_Clicked();
+                ShowSaveButton(CalcBtnSave);
+                __calc_before = false;
+            }
+        }
+
+        bool __special_missin_for_named_calc = false;
+        string __special_missin_for_named_calc_name = "";
+        List<MonthlyResult> __special_missin_for_named_calc_results = new List<MonthlyResult>();
+        public void comeToBilling(string n, List<MonthlyResult> e)
+        {
+            __special_missin_for_named_calc_results = e;
+
+            if (graphics1.Visibility == Visibility.Hidden)
+                graphics1.Visibility = Visibility.Visible;
+            if (calcResultGrid.Visibility == Visibility.Hidden)
+                calcResultGrid.Visibility = Visibility.Visible;
+
+            calcResultGrid.ItemsSource = e;
+            chartViewModel.UpdateChart(e);
+            __special_missin_for_named_calc = true;
+            __special_missin_for_named_calc_name = n;
+        }
+        private void controllRadioBox(object sender, RoutedEventArgs e)
+        {
+            ControlCalcButton();
         }
 
         private async void calcBtmSave_Clicked(object sender, RoutedEventArgs e)
@@ -106,9 +252,12 @@ namespace RateCalc.Assets.Layouts
                     title2 = "New Calculation";
                     break;
             }
-
-            var dialog = new calcSaveDialog(title, btnText, title2);
-            Window parentWindow = Window.GetWindow(this);
+            calcSaveDialog dialog;
+            if (__special_missin_for_named_calc)
+                dialog = new calcSaveDialog(title, btnText, __special_missin_for_named_calc_name);
+            else
+                dialog = new calcSaveDialog(title, btnText, title2);
+            var parentWindow = Window.GetWindow(this) as RateCalcOpening;
             if (parentWindow != null)
             {
                 dialog.Owner = parentWindow;
@@ -169,7 +318,7 @@ namespace RateCalc.Assets.Layouts
                             }
 
                             var overwriteDialog = new calcSaveOverrideDialog(overwriteMessage, overwriteTitle);
-                            parentWindow = Window.GetWindow(this);
+                            parentWindow = Window.GetWindow(this) as RateCalcOpening;
                             if (parentWindow != null)
                             {
                                 overwriteDialog.Owner = parentWindow;
@@ -180,6 +329,7 @@ namespace RateCalc.Assets.Layouts
                                 AnimateLabelOut(interestCalcSaveLabel1);
                                 return;
                             }
+                            __special_missin_for_named_calc = false;
                         }
 
                         List<MonthlyResult> results = GetCurrentResults();
@@ -221,7 +371,7 @@ namespace RateCalc.Assets.Layouts
 
         Dictionary<int, decimal> newMonthlyIncome = new Dictionary<int, decimal>();
         Dictionary<int, decimal> monthlyInterest = new Dictionary<int, decimal>();
-        private void calcBtm_Clicked(object sender, RoutedEventArgs e)
+        public void calcBtm_Clicked()
         {
             if (__calc_before)
             {
@@ -552,11 +702,10 @@ namespace RateCalc.Assets.Layouts
         {
             if (interestPercentTBoxBool && interestCalcTBoxBool)
             {
-                ShowSaveButton(CalcBtn);
+                calcBtm_Clicked();
             }
             else
             {
-                HideSaveButton(CalcBtn);
             }
         }
         void RemoveRightBorderOfLastColumnHeader(DataGrid dataGrid)

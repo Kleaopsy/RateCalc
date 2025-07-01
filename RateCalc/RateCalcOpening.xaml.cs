@@ -2,6 +2,7 @@
 using MahApps.Metro.Controls;
 using RateCalc.Assets.Layouts;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -31,8 +32,9 @@ namespace RateCalc
     {
         public String _lang;
         HomeLayout _homeLayout = new Assets.Layouts.HomeLayout();
-        BillingLayout _billingLayout = new Assets.Layouts.BillingLayout();
+        BillingLayout _billingLayout = new Assets.Layouts.BillingLayout(false);
         SettingsLayout _settingsLayout = new Assets.Layouts.SettingsLayout();
+        BillingLayout _billingLayoutT = new Assets.Layouts.BillingLayout(true);
         public RateCalcOpening()
         {
             InitializeComponent();
@@ -42,6 +44,14 @@ namespace RateCalc
 
             homeBtn.Tag = "active";
             MainContent.Content = _homeLayout;
+        }
+
+        public void goToBilling(string n, List<MonthlyResult> a)
+        {
+            _billingLayoutT.comeToBilling(n, a);
+            MainContent.Content = _billingLayoutT;
+            homeBtn.Tag = "";
+            billinBtn.Tag = "active";
         }
         private void closeBtn_Clicked(object sender, System.Windows.RoutedEventArgs e)
         {

@@ -6,8 +6,112 @@
              xmlns:local="clr-namespace:RateCalc.Assets.Layouts"
              mc:Ignorable="d" 
              d:DesignHeight="770" d:DesignWidth="1020">
-    <Grid>
-        <Label Margin="10,10,0,0" FontFamily="Calibri" FontSize="30" FontWeight="Medium" Content="{DynamicResource HelloWorldLabel}" Foreground="White" HorizontalAlignment="Left"/>
 
+    <UserControl.Resources>
+
+        <!-- Liste item stili -->
+        <Style x:Key="SavedCalculationItemStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource SecondDarkBackground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource LightSecondDarkBackground}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource LightSecondDarkBackground}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Text stilleri -->
+        <Style x:Key="TitleTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="DateTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FFB8BCC8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+        </Style>
+
+        <Style x:Key="DetailTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF9CA0AB"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,3,0,0"/>
+        </Style>
+
+        <!-- Silme butonu stili -->
+        <Style x:Key="DeleteButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#FF6B7280"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Margin" Value="10,0,5,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                    CornerRadius="6"
+                                    BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFE53E3E"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FFDC2626"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <!-- Content Area -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      Padding="20,0,20,20">
+            <StackPanel x:Name="SavedCalculationsPanel">
+                <!-- Dinamik olarak doldurulacak -->
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Loading indicator -->
+        <Grid x:Name="LoadingGrid"
+              Background="{StaticResource DarkBackground}"
+              Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="" 
+                           Style="{StaticResource TitleTextStyle}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Empty state -->
+        <Grid x:Name="EmptyStateGrid"
+              Background="{StaticResource DarkBackground}"
+              Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{DynamicResource HomeLayoutLabel1}" 
+                           Style="{StaticResource TitleTextStyle}"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="{DynamicResource HomeLInterestLabel1}" 
+                           Style="{StaticResource DetailTextStyle}"
+                           HorizontalAlignment="Center"
+                           Margin="0,10,0,0"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
