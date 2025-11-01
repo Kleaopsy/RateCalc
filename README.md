@@ -45,7 +45,7 @@ Below are some screenshots from the current version of **RateCalc**.
 
 | Main Calculator Page | Monthly Chart View |
 |------------------------|--------------------|
-| ![Main Page](Screenshots/main_calc.png) | ![Chart View](Screenshots/chart_view.png) |
+| ![Main Page](Screenshots/home.png) | ![Chart View](Screenshots/calc.png) |
 
 > 💡 *The interface was designed with minimalism and clarity in mind, making financial calculations accessible to everyone.*
 
