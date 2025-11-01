@@ -50,5 +50,10 @@ Below are some screenshots from the current version of **RateCalc**.
 
 ---
 
-## 🧩 Project Structure
+## 🚀 Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Kleaopsy/RateCalc.git
+   cd RateCalc
 
