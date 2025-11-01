@@ -53,7 +53,7 @@ Below are some screenshots from the current version of **RateCalc**.
 ## 🚀 Installation
 
 1. Download the setup file from the repository:  
-   [📦 RateCalcSetup/RateCalcSetup.msi](./RateCalcSetup/Release/RateCalcSetup.msi)
+   [📦 RateCalcSetup/RateCalcSetup.msi](https://github.com/Kleaopsy/RateCalc/raw/main/RateCalcSetup/Release/RateCalcSetup.msi)
 
 2. Run the installer and follow the on-screen instructions.
 
