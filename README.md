@@ -20,8 +20,7 @@ RateCalc offers a simple yet powerful interface to handle it all.
 - 📈 **Dynamic Charts** — Visualize your monthly or yearly growth with automatically generated graphs.  
 - 🧮 **Real-Time Updates** — Calculations refresh instantly when values change.  
 - 🪟 **WPF Modern Interface** — Clean UI built using Windows Presentation Foundation.  
-- 💾 **Local Data Storage** — Save and reload your previous calculations.  
-- 🌙 **Light / Dark Mode** — Switch between themes for comfortable use.  
+- 💾 **Local Data Storage** — Save and reload your previous calculations.
 
 ---
 
