@@ -52,8 +52,6 @@ Below are some screenshots from the current version of **RateCalc**.
 
 ## 🚀 Installation
 
-## 🚀 Installation
-
 1. Download the setup file from the repository:  
    [📦 RateCalcSetup/RateCalcSetup.msi](./RateCalcSetup/RateCalcSetup.msi)
 
