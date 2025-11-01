@@ -52,8 +52,14 @@ Below are some screenshots from the current version of **RateCalc**.
 
 ## 🚀 Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Kleaopsy/RateCalc.git
-   cd RateCalc
+## 🚀 Installation
+
+1. Download the setup file from the repository:  
+   [📦 RateCalcSetup/RateCalcSetup.msi](./RateCalcSetup/RateCalcSetup.msi)
+
+2. Run the installer and follow the on-screen instructions.
+
+3. Once installed, open **RateCalc** from your Start Menu or Desktop shortcut.
+
+> 💡 *If you prefer to view or modify the source code, you can still clone the repository and open `RateCalc.sln` in Visual Studio.*
 
